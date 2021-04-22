@@ -50,9 +50,10 @@ button {
     border-color: darkgray;
   }
 }
-.submit {
+#submit {
   display: flex;
   justify-content: flex-end;
+  
 }
 .errors{
   color: red;
