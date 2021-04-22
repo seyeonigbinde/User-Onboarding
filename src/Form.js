@@ -19,19 +19,31 @@ export default function Form (props) {
 
         <div className="errors">
             <em>
-          <div>{errors.fullName}</div>
+          <div>{errors.first_name}</div>
+          <div>{errors.last_name}</div>
           <div>{errors.email}</div>
           <div>{errors.pwd}</div>
           </em>
         </div>
       <div>
-        <label>Name
+        <label>First Name
           <input
             type="text"
-            value={values.fullName}
+            value={values.first_name}
             onChange={onChange}
-            name="fullName"
-            placeholder="Full Name"
+            name="first_name"
+            placeholder="First Name"
+            maxLength="30"
+          />
+        </label>
+
+        <label>Last Name
+          <input
+            type="text"
+            value={values.last_name}
+            onChange={onChange}
+            name="last_name"
+            placeholder="Last Name"
             maxLength="30"
           />
         </label>
@@ -67,7 +79,7 @@ export default function Form (props) {
         </label>
 
         <div className='submit'>
-          <button disabled={!values.fullName || !values.email || !values.role}>submit</button>
+          <button disabled={disabled}>submit</button>
         </div>
       </div>
     </form>

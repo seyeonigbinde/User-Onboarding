@@ -1,59 +1,49 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
 import Form from './Form';
+import Users from './Users';
 import axios from 'axios';
-import schema from "./validation/formSchema";
-import * as yup from "yup";
+import schema from './validation/formSchema';
+import * as yup from 'yup';
 
 
   const initialFormValues = {
-    fullName: "",
+    first_name: "",
+    last_name: "",
     email: "",
     pwd: "",
     tos: false,
   };
   const initialFormErrors = {
-    fullName: "",
+    first_name: "",
+    last_name: "",
     email: "",
     pwd: "",
   };
   const initialUsers = [];
   const initialDisabled = true;
   
-  function App() {
+function App() {
     const [users, setUsers] = useState(initialUsers);
     const [formValues, setFormValues] = useState(initialFormValues); 
     const [formErrors, setFormErrors] = useState(initialFormErrors); 
     const [disabled, setDisabled] = useState(initialDisabled); 
       
-    const getUsers = () => {
-          axios
-            .get("https://reqres.in/api/users")
-            .then((res) => {
-              setUsers(res.data);
-            })
-            .catch((err) => {
-              console.log(err);
-              debugger;
-            });
-        };
     
-    
-    const postNewUser = (newUser) => {
+      const postNewUser = (newUser) => {
           axios
             .post("https://reqres.in/api/users", newUser)
             .then((res) => {
               setUsers([res.data, ...users]);
               setFormValues(initialFormValues);
+              console.log(users)
             })
             .catch((err) => {
               console.log(err);
-              debugger;
             });
         };
       
-        const inputChange = (name, value) => {
-      
+      const inputChange = (name, value) => {
           yup
             .reach(schema, name) 
             .validate(value) 
@@ -78,16 +68,14 @@ import * as yup from "yup";
       
         const formSubmit = () => {
           const newUsers = {
-            name: formValues.fullName.trim(),
+            first_name: formValues.first_name.trim(),
+            last_name: formValues.last_name.trim(),
             email: formValues.email.trim(),
             pwd: formValues.pwd.trim(),
-
+            tos: formValues.tos,
           };
           postNewUser(newUsers);
         };
-        useEffect(() => {
-              getUsers();
-            }, []);
           
             useEffect(() => {
               schema.isValid(formValues).then((valid) => {
@@ -106,7 +94,10 @@ import * as yup from "yup";
         disabled={disabled}
         errors={formErrors}/>
           <h1>List of Users</h1>
-      
+          {
+          users.map((user) => {
+        return <Users key={user.id} details={user} />;
+      })}
     </div>
     
   );
